@@ -1,0 +1,268 @@
+html, body, #mainContainer {
+  padding     : 0;
+  margin      : 0;
+  height      : 100%;
+  width       : 100%;
+  font-family : Arial, Helvetica, sans-serif;
+}
+
+/*#mainContainer .dijitContentPane {
+  background-color : #f2e8de;
+  color            : #7b654b;
+}*/
+
+#topPane, #centerContainer {
+  padding  : 0 !important;
+  overflow : hidden;
+}
+
+#stackController .dijitButtonNode {
+  width      : 300px !important;
+  padding    : 8px !important;
+  background : transparent !important;
+  border     : solid 2px transparent !important;
+}
+
+#stackController .dijitToggleButtonHover .dijitButtonNode {
+  border-color : #999 !important;
+}
+
+#stackController .dijitToggleButtonChecked .dijitButtonNode {
+  border-color : #333 !important;
+}
+
+#optionsTabContainer .dijitTabPaneWrapper {
+  border : none !important;
+}
+
+#optionsTabContainer .dijitTabContainerTop-tabs {
+  border-bottom : solid 1px #333 !important;
+}
+
+#optionsTabContainer .dijitTab {
+  font-size     : larger;
+  background    : none !important;
+  color         : #999;
+  border        : solid 1px transparent !important;
+  border-bottom : none !important;
+}
+
+#optionsTabContainer .dijitTabHover {
+  color        : #666;
+  border-color : #666 !important;
+}
+
+#optionsTabContainer .dijitTabChecked {
+  color         : #333;
+  background    : none !important;
+  border-color  : #333 !important;
+  border-bottom : solid 1px white !important;
+}
+
+/*
+#optionsTabContainer .dijitTabContainerTop-container {
+  border : none !important;
+}
+*/
+
+#searchPane {
+  padding : 20px;
+}
+
+.searchOption {
+  margin  : 5px;
+  padding : 5px;
+}
+
+#topTable {
+  background-color : ghostwhite;
+}
+
+#appTitle {
+  padding     : 15px;
+  text-align  : center;
+  font-size   : 19pt;
+  text-shadow : 2px 2px 2px gray;
+}
+
+#usagePane {
+  padding : 0 !important;
+}
+
+.userImageNode {
+  width            : 80px;
+  height           : 80px;
+  margin-top       : 20px;
+  border-radius    : 40px;
+  background-color : ghostwhite;
+  box-shadow       : 0 0 10px gray;
+}
+
+#orgNameNode {
+  font-size : 15pt;
+}
+
+#userNameNode {
+  font-size : 13pt;
+}
+
+#getUsageReportBtn {
+  font-size : medium;
+}
+
+#creditsNode {
+  font-size : 60pt;
+  color     : darkgreen;
+}
+
+#dataDateRange {
+  font-size   : larger;
+  color       : #444;
+  font-weight : bolder;
+  font-style  : italic;
+}
+
+#availableLabelNode {
+  color      : gray;
+  font-style : italic;
+}
+
+.noneLabel {
+  color      : silver;
+  font-style : italic;
+}
+
+.field-credits[role="columnheader"], .field-bw[role="columnheader"], .field-num[role="columnheader"], .field-stg[role="columnheader"] {
+  text-align : right;
+}
+
+.field-credits {
+  color : darkred;
+}
+
+.field-num {
+  border-left : solid 4px #444 !important;
+}
+
+.dateCell {
+  color      : gray;
+  font-style : italic;
+}
+
+.costDetailsPane {
+  background-color : white;
+  font-size        : smaller;
+}
+
+#toolbarPane label {
+  font-style : italic;
+}
+
+#searchResultsDlg .dijitDialogPaneContentArea {
+  margin     : 15px;
+  min-width  : 250px;
+  min-height : 100px;
+}
+
+.resultNode {
+  cursor        : pointer;
+  padding       : 5px;
+  border-bottom : solid 1px silver;
+  font-size     : larger;
+}
+
+.resultNode:hover {
+  color : darkblue;
+}
+
+.serviceType {
+  cursor : help;
+}
+
+.totalLabel {
+  color      : #444;
+  font-style : italic;
+}
+
+.totalNode {
+  color       : darkred;
+  font-weight : bolder;
+}
+
+#totalsTable {
+  width            : 250px;
+  height           : 120px;
+  margin           : 5px;
+  padding          : 5px;
+  /*background    : #EFEFEF linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%) repeat-x;*/
+  background-color : #EFEFEF;
+  border           : solid 1px #333;
+  /*border-radius    : 3px;*/
+}
+
+.topListLabel {
+  color         : #444;
+  font-weight   : bolder;
+  border-bottom : solid 2px #666;
+  text-align    : center;
+  padding       : 3px 0 3px 0;
+}
+
+.portalUserNode, .portalServiceNode {
+  cursor        : pointer;
+  font-size     : smaller;
+  padding       : 8px;
+  border-bottom : dashed 1px silver;
+}
+
+.portalUserNode:hover, .portalServiceNode:hover {
+  background-color : #f8f8f8;
+
+}
+
+.userCreditsNode, .serviceCreditsNode {
+  float       : right;
+  color       : darkred;
+  font-weight : bolder;
+}
+
+.dijitDialogPaneContentArea {
+  max-height : 600px;
+  overflow   : auto !important;
+}
+
+.anonymousUser {
+  color : dodgerblue;
+}
+
+.nonOrgUser {
+  color : darkorange;
+}
+
+.orgUser {
+  color : darkgreen;
+}
+
+.theOrg {
+  color : darkblue;
+}
+
+.tundra .ui-state-default:hover {
+  background-color : ghostwhite;
+}
+
+.dojoxExpandoClosed .dojoxExpandoTitleNode {
+  display : inline !important;
+}
+
+.dgrid {
+  width   : 100% !important;
+  height  : 100% !important;
+  margin  : 0 !important;
+  padding : 0 !important;
+  border  : none !important;
+}
+
+.userValue {
+  text-align : right;
+}

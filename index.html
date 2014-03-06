@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Portal Usage and Credits</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.8/js/dojo/dijit/themes/tundra/tundra.css">
+    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.8/js/dgrid/css/dgrid.css">
+    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.8/js/dgrid/css/skins/tundra.css">
+    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.8/js/dojo/dojox/layout/resources/ExpandoPane.css">
+    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.8/js/esri/css/esri.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script type="text/javascript">
+      var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+      var dojoConfig = {
+        parseOnLoad: true,
+        packages: [
+          {
+            name: "application",
+            location: package_path + '/js'
+          },
+          {
+            name: "config",
+            location: package_path + '/config'
+          }
+        ]
+      };
+    </script>
+    <script type="text/javascript" src="//js.arcgis.com/3.8/"></script>
+    <script type="text/javascript">
+      require([
+        "application/main",
+        "application/template",
+        "dijit/layout/BorderContainer",
+        "dijit/layout/StackContainer",
+        "dijit/layout/StackController",
+        "dijit/layout/ContentPane",
+        "dojox/layout/ExpandoPane",
+        "dijit/Toolbar",
+        "dijit/form/DateTextBox",
+        "dijit/form/Button",
+        "dijit/form/NumberSpinner",
+        "dijit/form/Select",
+        "dijit/form/CheckBox",
+        "dojo/domReady!"
+      ], function (Main, Template) {
+        var supportsLocalization = true;
+        var myTemplate = new Template(supportsLocalization);
+        myTemplate.on("ready", function (config) {
+          var applicaiton = new Main(config);
+        });
+      });
+    </script>
+  </head>
+  <body class="tundra">
+    <div id="mainContainer" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'sidebar',gutters:true">
+      <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="region:'left',gutters:false,splitter:true,style:{width:'400px'}">
+        <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top',style:{height:'225px'}">
+          <div id="appTitle">Usage and Credit Reports</div>
+          <center>
+            <div id="orgNameNode"></div>
+            <div id="userImageNode"></div>
+            <div id="userNameNode"></div>
+          </center>
+        </div>
+        <div id="optionsTabContainer" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region:'center'">
+          <div id="searchPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="title:'Search'">
+
+            <div class="searchOption">
+              <label for="startDateInput">Start Date:</label>
+              <input id="startDateInput" data-dojo-type="dijit/form/DateTextBox"/>
+            </div>
+            <div class="searchOption">
+              <label for="endDateInput">End Date:&nbsp;</label>
+              <input id="endDateInput" data-dojo-type="dijit/form/DateTextBox"/>
+            </div>
+            <div class="searchOption">
+              <label for="periodInput">Aggregation Period:</label>
+              <input id="periodInput" data-dojo-type="dijit/form/NumberSpinner" data-dojo-props="value:1,intermediateChanges:true,constraints:{min:1,max:24,places:0},style:{width:'60px'}"/>
+              <select id="periodSelect" data-dojo-type="dijit/form/Select">
+                <option value="h">Hours</option>
+                <option value="d">Days</option>
+                <option value="w" selected="selected">Weeks</option>
+                <option value="m">Months</option>
+              </select>
+            </div>
+            <center class="searchOption">
+              <div id="getUsageReportBtn" data-dojo-type="dijit/form/Button" data-dojo-props="disabled:true">
+                <div style="font-weight:bolder;">
+                  Update Credit and Usage Report
+                </div>
+              </div>
+            </center>
+
+          </div>
+          <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="title:'Reports',selected:true">
+            <center style="margin-top:15px;">
+              <div id="stackController" data-dojo-type="dijit/layout/StackController" data-dojo-props="containerId:'centerContainer'"></div>
+            </center>
+          </div>
+        </div>
+        <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'bottom',style:{height:'275px'}">
+          <center>
+            <span id="dataDateRange"></span>
+            <table id="totalsTable" border="0">
+              <tr align="right">
+                <td width="50%" class="totalLabel">Requests:&nbsp;</td>
+                <td>
+                  <div id="totalRequests" class="totalNode"></div>
+                </td>
+              </tr>
+              <tr align="right">
+                <td class="totalLabel">Bandwidth:&nbsp;</td>
+                <td>
+                  <div id="totalBandwidth" class="totalNode"></div>
+                </td>
+              </tr>
+              <tr align="right">
+                <td class="totalLabel">Storage:&nbsp;</td>
+                <td>
+                  <div id="totalStorage" class="totalNode"></div>
+                </td>
+              </tr>
+              <tr align="right">
+                <td class="totalLabel">Credits:&nbsp;</td>
+                <td>
+                  <div id="totalCredits" class="totalNode"></div>
+                </td>
+              </tr>
+            </table>
+            <div id="creditsNode"></div>
+            <div id="availableLabelNode"></div>
+          </center>
+        </div>
+      </div>
+      <div id="centerContainer" data-dojo-type="dijit/layout/StackContainer" data-dojo-props="region:'center',splitter:true,gutters:false">
+
+        <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="title:'All Details',gutters:false">
+          <div id="filterToolbarPane" data-dojo-type="dijit/Toolbar" data-dojo-props="region:'top',style:{padding:'10px'}">
+            <span style="font-weight:bolder;color:darkblue;">&nbsp;&nbsp;FILTER</span>
+            <label for="userTypeSelect" style=" font-style : italic;">User Type:</label>
+            <select id="userTypeSelect" data-dojo-type="dijit/form/Select" data-dojo-props="disabled:true,sortByLabel:false,style:{width:'150px'}">
+              <option value="none" selected="selected">All Users</option>
+              <option value="anonymousUser">Anonymous</option>
+              <option value="nonOrgUser">Non-Org Users</option>
+              <option value="orgUser">Org Users</option>
+              <option value="theOrg">The Org</option>
+            </select>
+            <label for="usernameSelect" style=" font-style : italic;">User Name:</label>
+            <select id="usernameSelect" data-dojo-type="dijit/form/Select" data-dojo-props="disabled:true,sortByLabel:false"> </select>
+            <label for="serviceNamesSelect" style=" font-style : italic;">Service Name:</label>
+            <select id="serviceNamesSelect" data-dojo-type="dijit/form/Select" data-dojo-props="disabled:true,sortByLabel:false"> </select>
+            <label for="serviceTypeSelect" style=" font-style : italic;">Usage Type:</label>
+            <select id="serviceTypeSelect" data-dojo-type="dijit/form/Select" data-dojo-props="disabled:true,sortByLabel:false"> </select>
+            <label id="searchResultsCount" style="float:right;font-weight:bolder;color:darkblue;"></label>
+          </div>
+          <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+            <div id="usagePane"></div>
+          </div>
+        </div>
+
+        <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="title:'Organization',gutters:true">
+          <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top',style:{height:'250px'}">
+            <div id="orgPane"></div>
+          </div>
+          <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+            <div id="orgChartNode" style="width:100%; height:100%; margin: 0 auto 0 auto;"></div>
+          </div>
+        </div>
+        <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="title:'Users',gutters:true">
+          <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top',style:{height:'50%'}">
+            <div id="usersPane"></div>
+          </div>
+          <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+            <div id="usersChartNode" style="width:100%; height:100%; margin: 0 auto 0 auto;"></div>
+          </div>
+        </div>
+        <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="gutters:false,title:'Services'">
+          <div id="servicesPane"></div>
+        </div>
+        <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="gutters:false,title:'Top Credit Consumers'">
+          <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'left',splitter:true,style:{width:'33%'}">
+            <div class="topListLabel">Top Users</div>
+            <div id="portalUsersNode"></div>
+          </div>
+          <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+            <div class="topListLabel">Top Services</div>
+            <div id="portalServicesNode"></div>
+          </div>
+          <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'right',splitter:true,style:{width:'33%'}">
+            <div class="topListLabel">Top Applications</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
