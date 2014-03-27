@@ -54,7 +54,7 @@ define([
       "svcusg.nacfroute": {vars: ["num"], task: "", desc: "Number of closest facility routes made.", other: ""},
       "svcusg.naservicearea": {vars: ["num"], task: "", desc: "Number of service area requests.", other: ""},
       "svcusg.navrproute": {vars: ["num"], task: "", desc: "Number of Vehicle Routing (VRP) routes.", other: ""},
-      "svcusg.geoenrich": {vars: ["credits", "num"], task: "display,report,geoenrich", desc: "Number of areas/inputs and cost for GeoEnrichment services.", other: "Credits are calculated against the cost variable.", other: ""},
+      "svcusg.geoenrich": {vars: ["credits", "num"], task: "display,report,geoenrich", desc: "Number of areas/inputs and cost for GeoEnrichment services.", other: "Credits are calculated against the cost variable."},
       "svcusg.geotrigger": {vars: ["num"], task: "", desc: "Number of geotrigger calls", other: ""},
       "svcusg.spanalysis": {vars: ["credits", "num"], task: "AggregatePoints, FindHotSpots, CreateBuffers, CreateDriveTimeAreas, DissolveBoundaries, MergeLayers, SummarizeWithin, SummarizeNearby, EnrichLayer, OverlayLayers, ExtractData, FindNearest", desc: "Number of requests to Spatial Analsysis.", other: "Credits are calculated against the cost variable."},
       "svcusg.demogmaps": {vars: ["credits", "num"], task: "export,infographics", desc: "Number of requests to Demographic Maps.", other: "Credits are calculated against the num variable."},
@@ -114,7 +114,7 @@ define([
           } else {
 
             put(dom.byId('userImageNode'), 'img.userImageNode', {
-              src: this.portalUser.thumbnailUrl,
+              src: lang.replace("{thumbnailUrl}?token={credential.token}", this.portalUser),
               alt: "User Image",
               onclick: function () {
                 window.open("http://mediawikidev.esri.com/index.php/ArcGIS.com/Credit_and_Reporting_APIs");
@@ -129,13 +129,16 @@ define([
               this.portalUsers = portalUsers;
 
               // GET USAGE REPORTS //
-              this.updateUsageReports();
+              this.updateUsageReports().then(lang.hitch(this, function () {
+                registry.byId('mainContainer').layout();
+              }));
 
               registry.byId('getUsageReportBtn').on('click', lang.hitch(this, this.updateUsageReports));
 
               registry.byId('userTypeSelect').on('change', lang.hitch(this, this.filterResults, true));
               registry.byId('usernameSelect').on('change', lang.hitch(this, this.filterResults, false));
               registry.byId('serviceNamesSelect').on('change', lang.hitch(this, this.filterResults, false));
+              registry.byId('applicationIdSelect').on('change', lang.hitch(this, this.filterResults, false));
               registry.byId('serviceTypeSelect').on('change', lang.hitch(this, this.filterResults, false));
 
               registry.byId('startDateInput').on('change', lang.hitch(this, this.updateUsageReportBtn));
@@ -233,7 +236,7 @@ define([
 
             })
           },
-          appid: { label: "App Id" },
+          appId: { label: "App Id" },
           num: {
             label: "Number of Requests",
             renderCell: lang.hitch(this, this.cellRenderer, 'num', 0)
@@ -350,6 +353,39 @@ define([
       this.servicesGrid.startup();
 
 
+      this.applicationsGrid = declare([OnDemandGrid, DijitRegistry])({
+        store: usageStore,
+        minRowsPerPage: 10000,
+        sort: [
+          {attribute: "appOrgId", descending: true}
+        ],
+        columns: {
+          appId: {
+            label: "App Id"
+          },
+          appOrgId: {
+            label: "App Org",
+            formatter: lang.hitch(this, function (appOrgId) {
+              return (this.portalUser.portal.id === appOrgId) ? this.portalUser.portal.name : appOrgId;
+            })
+          },
+          num: {
+            label: "Number of Requests",
+            renderCell: lang.hitch(this, this.totalsCellRenderer, 'num', 0)
+          },
+          bw: {
+            label: "Bandwidth",
+            renderCell: lang.hitch(this, this.totalsCellRenderer, 'bw', 0)
+          },
+          credits: {
+            label: "Credits",
+            renderCell: lang.hitch(this, this.totalsCellRenderer, 'credits', 6)
+          }
+        }
+      }, "applicationsPane");
+      this.applicationsGrid.startup();
+
+
     },
 
     updateUsageReportBtn: function () {
@@ -357,6 +393,7 @@ define([
       registry.byId('userTypeSelect').set('disabled', true);
       registry.byId('usernameSelect').set('disabled', true);
       registry.byId('serviceNamesSelect').set('disabled', true);
+      registry.byId('applicationIdSelect').set('disabled', true);
       registry.byId('serviceTypeSelect').set('disabled', true);
 
       dom.byId('portalUsersNode').innerHTML = "";
@@ -393,6 +430,7 @@ define([
     },
 
     updateUsageReports: function () {
+      var deferred = new Deferred();
 
       var requestDialog = new Dialog({
         title: "Usage and Credit Report",
@@ -404,10 +442,14 @@ define([
       all([
         this.getUsageReport(),
         this.getUsersReports(),
-        this.getServicesReports()
+        this.getServicesReports(),
+        this.getApplicationReports()
       ]).then(lang.hitch(this, function () {
             requestDialog.hide();
-          }));
+            deferred.resolve();
+          }), deferred.reject);
+
+      return deferred.promise;
     },
 
     /**
@@ -589,6 +631,12 @@ define([
         {id: "none", label: '<span class="noneLabel">...no service name filter...</span>'}
       ];
 
+      var applicationIds = [];
+      var applicationIdsData = [
+        {id: "none", label: '<span class="noneLabel">...no application id filter...</span>'}
+      ];
+
+
       array.forEach(usageReport.data, function (usageDetails) {
         if(array.indexOf(usernames, usageDetails.username) === -1) {
           usernames.push(usageDetails.username);
@@ -604,6 +652,13 @@ define([
             label: usageDetails.name
           });
         }
+        if(array.indexOf(applicationIds, usageDetails.appId) === -1) {
+          applicationIds.push(usageDetails.appId);
+          applicationIdsData.push({
+            id: usageDetails.appId,
+            label: usageDetails.appId
+          });
+        }
       });
 
       var usernamesStore = new ObjectStore({ objectStore: new Memory({
@@ -617,6 +672,13 @@ define([
       })});
       registry.byId('serviceNamesSelect').setStore(serviceNamesStore);
       registry.byId('serviceNamesSelect').set('disabled', false);
+
+
+      var applicationIdsStore = new ObjectStore({ objectStore: new Memory({
+        data: applicationIdsData
+      })});
+      registry.byId('applicationIdSelect').setStore(applicationIdsStore);
+      registry.byId('applicationIdSelect').set('disabled', false);
 
     },
 
@@ -644,6 +706,11 @@ define([
         filterQuery.name = serviceNamesFilter;
       }
 
+      var applicationIdFilter = registry.byId('applicationIdSelect').get('value');
+      if((applicationIdFilter !== '') && (applicationIdFilter !== 'none')) {
+        filterQuery.appId = applicationIdFilter;
+      }
+
       var serviceFilter = registry.byId('serviceTypeSelect').get('value');
       if((serviceFilter !== '') && (serviceFilter !== 'none')) {
         var typeParts = serviceFilter.split('.');
@@ -667,14 +734,16 @@ define([
       registry.byId('userTypeSelect').set('disabled', false);
       registry.byId('usernameSelect').set('disabled', false);
       registry.byId('serviceNamesSelect').set('disabled', false);
+      registry.byId('applicationIdSelect').set('disabled', false);
       registry.byId('serviceTypeSelect').set('disabled', true);
       registry.byId('userTypeSelect').set('value', 'none');
       registry.byId('usernameSelect').set('value', 'none');
       registry.byId('serviceNamesSelect').set('value', 'none');
+      registry.byId('applicationIdSelect').set('value', 'none');
       registry.byId('serviceTypeSelect').set('value', 'none');
 
 
-      return this._getUsageReport("etype,stype,name,username", "bw,num,stg,cpu,credits").then(lang.hitch(this, function (usageReport) {
+      return this._getUsageReport("etype,stype,name,username,appid", {}, "bw,num,stg,cpu,credits").then(lang.hitch(this, function (usageReport) {
         //console.log(usageReport);
 
         var dataStartTime = new Date(usageReport.startTime);
@@ -684,6 +753,7 @@ define([
         dom.byId('dataDateRange').innerHTML = lang.replace("{0} to {1}", [dataStartDate, dataEndDate]);
 
         this.serviceNames = [];
+        this.appIds = []
 
         array.forEach(usageReport.data, lang.hitch(this, function (usageDetails) {
 
@@ -709,6 +779,12 @@ define([
               this.serviceNames.push(usageDetails.name);
             }
           }
+          // BUILD LIST OF UNIQUE APP IDS //
+          if(array.indexOf(this.appIds, usageDetails.appId) === -1) {
+            if(usageDetails.appId) {
+              this.appIds.push(usageDetails.appId);
+            }
+          }
 
         }));
 
@@ -721,12 +797,12 @@ define([
 
         this.updateOrgCharts(this.usageGrid);
 
-
         this.updateFilterSelects(usageReport);
         registry.byId('serviceTypeSelect').set('disabled', false);
 
         this.displayUserStats();
         this.displayServiceStats();
+        this.displayApplicationsStats();
       }));
 
     },
@@ -734,7 +810,7 @@ define([
 
     getUsersReports: function () {
 
-      return this._getUsageReport("username", "bw,num,stg,cpu,credits").then(lang.hitch(this, function (usageReport) {
+      return this._getUsageReport("username", {}, "bw,num,stg,cpu,credits").then(lang.hitch(this, function (usageReport) {
 
         array.forEach(usageReport.data, lang.hitch(this, function (usageDetails) {
           if(!usageDetails.username) {
@@ -762,7 +838,7 @@ define([
 
     getServicesReports: function () {
 
-      return this._getUsageReport("name,hostorgid", "bw,num,stg,credits").then(lang.hitch(this, function (usageReport) {
+      return this._getUsageReport("name,hostorgid", {}, "bw,num,stg,credits").then(lang.hitch(this, function (usageReport) {
 
         var data = array.filter(usageReport.data, lang.hitch(this, function (usageDetails) {
           return (usageDetails.hasOwnProperty('name') && (usageDetails.name != null) && (usageDetails.name != ""));
@@ -781,14 +857,36 @@ define([
 
     },
 
+    getApplicationReports: function () {
+
+      return this._getUsageReport("appid,apporgid", {}, "bw,num,stg,credits").then(lang.hitch(this, function (usageReport) {
+
+        var data = array.filter(usageReport.data, lang.hitch(this, function (usageDetails) {
+          return (usageDetails.hasOwnProperty('appId') && (usageDetails.appId != null) && (usageDetails.appId != ""));
+        }));
+
+        var usageStore = new Memory({
+          idProperty: "appId",
+          data: data
+        });
+
+        if(this.applicationsGrid) {
+          this.applicationsGrid.set("store", usageStore);
+        }
+
+      }));
+
+    },
+
     /**
      *
      * @param groupBy
+     * @param filters
      * @param variables
      * @returns {*}
      * @private
      */
-    _getUsageReport: function (groupBy, variables) {
+    _getUsageReport: function (groupBy, filters, variables) {
       var deferred = new Deferred();
 
       var startDate = registry.byId('startDateInput').get('value');
@@ -796,16 +894,20 @@ define([
       var periodInput = registry.byId('periodInput').get('value');
       var periodSelect = registry.byId('periodSelect').get('value');
 
+      var dateRange = {
+        startTime: startDate.valueOf(),
+        endTime: endDate.valueOf(),
+        period: periodInput + periodSelect
+      };
+
+      var parameters = {
+        groupby: groupBy,
+        vars: variables
+      };
+
       esriRequest({
         url: lang.replace("{portal.portalUrl}/portals/{portal.id}/usage", this.portalUser),
-        content: {
-          f: "json",
-          startTime: startDate.valueOf(),
-          endTime: endDate.valueOf(),
-          period: periodInput + periodSelect,
-          groupby: groupBy,
-          vars: variables
-        }
+        content: lang.mixin({ f: "json" }, dateRange, parameters, filters || {})
       }).then(lang.hitch(this, function (usageReport) {
             //console.log(usageReport);
             deferred.resolve(usageReport);
@@ -838,6 +940,7 @@ define([
             onclick: lang.hitch(this, function () {
               registry.byId('userTypeSelect').set('value', 'none');
               registry.byId('serviceNamesSelect').set('value', 'none');
+              registry.byId('applicationIdSelect').set('value', 'none');
               registry.byId('serviceTypeSelect').set('value', 'none');
               registry.byId('usernameSelect').set('value', creditsInfo.username);
             })
@@ -873,6 +976,7 @@ define([
             onclick: lang.hitch(this, function () {
               registry.byId('userTypeSelect').set('value', 'none');
               registry.byId('usernameSelect').set('value', 'none');
+              registry.byId('applicationIdSelect').set('value', 'none');
               registry.byId('serviceTypeSelect').set('value', 'none');
               registry.byId('serviceNamesSelect').set('value', creditsInfo.name);
             })
@@ -883,6 +987,40 @@ define([
       }));
 
     },
+
+    displayApplicationsStats: function () {
+      var portalApplicationsNode = dom.byId('portalApplicationsNode');
+      portalApplicationsNode.innerHTML = "";
+
+      var creditsPerApp = array.map(this.appIds, lang.hitch(this, function (appId) {
+        return {
+          name: appId,
+          credits: this.calcCredits({appId: appId})
+        }
+      }));
+
+      creditsPerApp.sort(lang.hitch(this, function (item1, item2) {
+        return item2.credits - item1.credits;
+      }));
+
+      array.forEach(creditsPerApp, lang.hitch(this, function (creditsInfo) {
+        if(creditsInfo.credits > 0) {
+          var portalApplicationNode = put(portalApplicationsNode, 'div.portalApplicationsNode', {
+            onclick: lang.hitch(this, function () {
+              registry.byId('userTypeSelect').set('value', 'none');
+              registry.byId('usernameSelect').set('value', 'none');
+              registry.byId('serviceTypeSelect').set('value', 'none');
+              registry.byId('serviceNamesSelect').set('value', 'none');
+              registry.byId('applicationIdSelect').set('value', creditsInfo.appId);
+            })
+          });
+          put(portalApplicationNode, 'span.appIdNode', creditsInfo.name);
+          put(portalApplicationNode, 'span.applicationCreditsNode', this.formatNumericValue(creditsInfo.credits, 6));
+        }
+      }));
+
+    },
+
 
     /**
      *
@@ -898,6 +1036,11 @@ define([
       return totalCredits;
     },
 
+    /**
+     *
+     * @param values
+     * @returns {number}
+     */
     calcTotal: function (values) {
       var totalValue = 0;
       array.forEach(values, lang.hitch(this, function (val) {
@@ -944,6 +1087,16 @@ define([
       }
     },
 
+    /**
+     *
+     * @param variableName
+     * @param places
+     * @param object
+     * @param value
+     * @param node
+     * @param options
+     * @returns {*}
+     */
     totalsCellRenderer: function (variableName, places, object, value, node, options) {
       var isSize = ((variableName === 'bw') || (variableName === 'stg'));
       var totalValue = this.calcTotal(value);
@@ -1061,14 +1214,15 @@ define([
         "dojox/charting/themes/MiamiNice"
       ], lang.hitch(this, function (Chart, Pie, Highlight, MoveSlice, Tooltip, theTheme) {
 
-        var orgData = this.usersGrid.store.query({userType: "orgUser"});
+        var orgUsersData = this.usersGrid.store.query({userType: "orgUser"});
 
-        var creditsData = array.map(orgData, lang.hitch(this, function (orgItem) {
-          var totalCredits = this.calcTotal(orgItem.credits);
+        var creditsData = array.map(orgUsersData, lang.hitch(this, function (orgItem) {
+          orgItem.totalCredits = this.calcTotal(orgItem.credits);
+          this.usersGrid.store.put(orgItem);
           return {
-            y: totalCredits,
+            y: orgItem.totalCredits,
             text: orgItem.username,
-            tooltip: number.format(totalCredits, {places: 2}) + " credits"
+            tooltip: number.format(orgItem.totalCredits, {places: 2}) + " credits"
           };
         }));
 

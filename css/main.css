@@ -90,12 +90,13 @@ html, body, #mainContainer {
 }
 
 .userImageNode {
+  float            : left;
   width            : 80px;
   height           : 80px;
-  margin-top       : 20px;
-  border-radius    : 40px;
+  border-radius    : 80px;
+  margin           : 5px;
   background-color : ghostwhite;
-  box-shadow       : 0 0 10px gray;
+  box-shadow       : 0 0 3px gray;
 }
 
 #orgNameNode {
@@ -111,7 +112,7 @@ html, body, #mainContainer {
 }
 
 #creditsNode {
-  font-size : 60pt;
+  font-size : 32pt;
   color     : darkgreen;
 }
 
@@ -208,19 +209,19 @@ html, body, #mainContainer {
   padding       : 3px 0 3px 0;
 }
 
-.portalUserNode, .portalServiceNode {
+.portalUserNode, .portalServiceNode, .portalApplicationsNode {
   cursor        : pointer;
   font-size     : smaller;
   padding       : 8px;
   border-bottom : dashed 1px silver;
 }
 
-.portalUserNode:hover, .portalServiceNode:hover {
+.portalUserNode:hover, .portalServiceNode:hover, .portalApplicationsNode:hover {
   background-color : #f8f8f8;
 
 }
 
-.userCreditsNode, .serviceCreditsNode {
+.userCreditsNode, .serviceCreditsNode, .applicationCreditsNode {
   float       : right;
   color       : darkred;
   font-weight : bolder;
@@ -265,4 +266,17 @@ html, body, #mainContainer {
 
 .userValue {
   text-align : right;
+}
+
+#stackController {
+  color     : darkblue;
+  font-size : smaller;
+}
+
+#infoTable {
+  margin           : 5px;
+  padding          : 5px;
+  background-color : ghostwhite;
+  border           : solid 1px silver;
+  box-shadow       : 0 0 3px gray;
 }
