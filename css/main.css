@@ -203,6 +203,7 @@ html, body, #mainContainer {
 
 .topListLabel {
   color         : #444;
+  font-size     : larger;
   font-weight   : bolder;
   border-bottom : solid 2px #666;
   text-align    : center;

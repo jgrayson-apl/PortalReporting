@@ -59,12 +59,14 @@ define([
       "svcusg.spanalysis": {vars: ["credits", "num"], task: "AggregatePoints, FindHotSpots, CreateBuffers, CreateDriveTimeAreas, DissolveBoundaries, MergeLayers, SummarizeWithin, SummarizeNearby, EnrichLayer, OverlayLayers, ExtractData, FindNearest", desc: "Number of requests to Spatial Analsysis.", other: "Credits are calculated against the cost variable."},
       "svcusg.demogmaps": {vars: ["credits", "num"], task: "export,infographics", desc: "Number of requests to Demographic Maps.", other: "Credits are calculated against the num variable."},
       "svcusg.applogin": {vars: ["num"], task: "", desc: "Number of application logins (for tracking purposes)", other: ""},
+      "svcusg.apploginprovider": {vars: ["num"], task: "", desc: "Number of application logins (for tracking purposes) from the point of view of the appOrgId provider. For marketplace use cases.", other: ""},
       "svcusg.premiummaps": {vars: ["num", "credits"], task: "export,infographics,dataquery", desc: "Number of requests to premium map services.", other: "cost records the number of features in a query."},
       "svcusg.premiumimagery": {vars: ["num", "credits"], task: "export,infographics,download,dataquery", desc: "Number of requests to premium imagery services.", other: ""},
       "svcusg.premiumfeatures": {vars: ["num", "credits"], task: "", desc: "Number of requests to premium feature services.", other: ""},
       "svcusg.landscapemaps": {vars: ["num", "credits"], task: "export,infographics,dataquery", desc: "Number of requests to landscape map services.", other: ""},
       "svcusg.landscapeimagery": {vars: ["num", "credits"], task: "export,infographics,download,dataquery", desc: "Number of requests to landscape imagery services.", other: ""},
-      "svcusg.landscapeanalysis": {vars: ["num", "credits"], task: "", desc: "Number of requests to landscape analysis services.", other: ""}
+      "svcusg.landscapeanalysis": {vars: ["num", "credits"], task: "", desc: "Number of requests to landscape analysis services.", other: ""},
+      "svcusg.elevanalysis": {vars: ["num", "credits"], task: "", desc: "Number of requests to Elevation Analysis. Credits are calculated against the cost variable. ", other: "Task used in analysis."}
     },
 
     /**
@@ -131,6 +133,8 @@ define([
               // GET USAGE REPORTS //
               this.updateUsageReports().then(lang.hitch(this, function () {
                 registry.byId('mainContainer').layout();
+              }), lang.hitch(this, function (error) {
+                console.warn(error);
               }));
 
               registry.byId('getUsageReportBtn').on('click', lang.hitch(this, this.updateUsageReports));
@@ -161,14 +165,14 @@ define([
       var deferred = new Deferred();
 
       esriRequest({
-        url: lang.replace('{portalUrl}portals/{id}}/users', this.portalUser.portal),
+        url: lang.replace('{portalUrl}portals/{id}/users', this.portalUser.portal),
         content: {
           f: 'json',
           num: 1000
         }
       }).then(lang.hitch(this, function (response) {
-            deferred.resolve(response.users);
-          }), deferred.reject);
+        deferred.resolve(response.users);
+      }), deferred.reject);
 
       return deferred.promise;
     },
@@ -208,10 +212,14 @@ define([
           type: {
             label: "Type",
             renderCell: lang.hitch(this, function (object, value, node, options) {
-              return put('div.serviceType', {
-                innerHTML: object.variable.desc,
-                title: object.variable.other
-              })
+              if(object.variable) {
+                return put('div.serviceType', {
+                  innerHTML: object.variable ? object.variable.desc : "NO VARIABLE",
+                  title: object.variable.other
+                });
+              } else {
+                console.warn(object, value);
+              }
             })
           },
           username: {
@@ -445,9 +453,12 @@ define([
         this.getServicesReports(),
         this.getApplicationReports()
       ]).then(lang.hitch(this, function () {
-            requestDialog.hide();
-            deferred.resolve();
-          }), deferred.reject);
+        requestDialog.hide();
+        deferred.resolve();
+      }), lang.hitch(this, function (error) {
+        requestDialog.hide();
+        deferred.reject(error);
+      }));
 
       return deferred.promise;
     },
@@ -909,9 +920,9 @@ define([
         url: lang.replace("{portal.portalUrl}/portals/{portal.id}/usage", this.portalUser),
         content: lang.mixin({ f: "json" }, dateRange, parameters, filters || {})
       }).then(lang.hitch(this, function (usageReport) {
-            //console.log(usageReport);
-            deferred.resolve(usageReport);
-          }), deferred.reject);
+        //console.log(usageReport);
+        deferred.resolve(usageReport);
+      }), deferred.reject);
 
       return deferred.promise;
     },

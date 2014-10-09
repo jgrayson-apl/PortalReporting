@@ -3,11 +3,11 @@
 <head>
   <title>Portal Usage and Credits</title>
   <meta charset="utf-8">
-  <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.8/js/dojo/dijit/themes/tundra/tundra.css">
-  <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.8/js/dgrid/css/dgrid.css">
-  <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.8/js/dgrid/css/skins/tundra.css">
-  <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.8/js/dojo/dojox/layout/resources/ExpandoPane.css">
-  <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.8/js/esri/css/esri.css">
+  <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.9/js/dojo/dijit/themes/tundra/tundra.css">
+  <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.9/js/dgrid/css/dgrid.css">
+  <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.9/js/dgrid/css/skins/tundra.css">
+  <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.9/js/dojo/dojox/layout/resources/ExpandoPane.css">
+  <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.9/js/esri/css/esri.css">
   <link rel="stylesheet" type="text/css" href="css/main.css">
   <script type="text/javascript">
     var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
@@ -25,8 +25,7 @@
       ]
     };
   </script>
-  <script src="http://d3js.org/d3.v3.min.js"></script>
-  <script type="text/javascript" src="//js.arcgis.com/3.8/"></script>
+  <script type="text/javascript" src="//js.arcgis.com/3.9/"></script>
   <script type="text/javascript">
     require([
       "application/main",
@@ -165,7 +164,7 @@
       </div>
 
       <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="title:'Organization',gutters:true">
-        <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top',style:{height:'250px'}">
+        <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top',splitter:true,style:{height:'250px'}">
           <div id="orgPane"></div>
         </div>
         <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
@@ -173,7 +172,7 @@
         </div>
       </div>
       <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="title:'Users',gutters:true">
-        <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top',style:{height:'33%'}">
+        <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top',splitter:true,style:{height:'33%'}">
           <div id="usersPane"></div>
         </div>
         <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
@@ -191,15 +190,15 @@
       </div>
       <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="gutters:false,title:'Top Credit Consumers'">
         <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'left',splitter:true,style:{width:'33%'}">
-          <div class="topListLabel">Top Users</div>
+          <div class="topListLabel">Users</div>
           <div id="portalUsersNode"></div>
         </div>
         <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
-          <div class="topListLabel">Top Services</div>
+          <div class="topListLabel">Services</div>
           <div id="portalServicesNode"></div>
         </div>
         <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'right',splitter:true,style:{width:'33%'}">
-          <div class="topListLabel">Top Applications</div>
+          <div class="topListLabel">Applications</div>
           <div id="portalApplicationsNode"></div>
         </div>
       </div>
