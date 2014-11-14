@@ -133,7 +133,11 @@ html, body, #mainContainer {
   font-style : italic;
 }
 
-.field-credits[role="columnheader"], .field-bw[role="columnheader"], .field-num[role="columnheader"], .field-stg[role="columnheader"] {
+/*.field-credits[role="columnheader"], .field-bw[role="columnheader"], .field-num[role="columnheader"], .field-stg[role="columnheader"] {
+  text-align : right;
+}*/
+
+.field-credits, .field-bw, .field-num, .field-stg {
   text-align : right;
 }
 

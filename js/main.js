@@ -43,30 +43,120 @@ define([
       "stg.portal": {vars: ["stg"], task: "", desc: "Storage usage of Files on Portal", other: ""},
       "stg.tiles": {vars: ["stg"], task: "", desc: "Storage usage of Tile Services", other: ""},
       "stg.features": {vars: ["stg"], task: "", desc: "Storage usage of Feature Services", other: ""},
-      "tilegencnt.tiles": {vars: ["num"], task: "", desc: "Amount of tiles generated.", other: "(both etypes are acceptable and equivalent). etype should be considered like the 'gen' etype but is not because of legacy reasons."},
-      "loading.tiles": {vars: ["credits"], task: "", desc: "A number that represents the number of bundles loaded.", other: ""},
-      "svcusg.portal": {vars: ["num", "bw"], task: "", desc: "Number of downloads done and bandwidth used.", other: "Bandwidth is the variable used to charge credits."},
-      "svcusg.tiles": {vars: ["num", "bw"], task: "", desc: "Usage of tile services, including the number of requests and bandwidth used.", other: "Bandwidth is the variable used to charge credits."},
-      "svcusg.features": {vars: ["num", "bw"], task: "", desc: "Usage of feature services, including the number of requests and bandwidth used.", other: "Bandwidth is the variable used to charge credits."},
-      "geocodecnt.geocode": {vars: ["num"], task: "", desc: "Number of Batch Geocodes made.", other: " (both etypes are acceptable and equivalent). etype should be considered like the 'svcusg' etype but because of legacy reasons is not."},
+      "tilegencnt.tiles": {
+        vars: ["num"],
+        task: "",
+        desc: "Amount of tiles generated.",
+        other: "(both etypes are acceptable and equivalent). etype should be considered like the 'gen' etype but is not because of legacy reasons."
+      },
+      "loading.tiles": {
+        vars: ["credits"],
+        task: "",
+        desc: "A number that represents the number of bundles loaded.",
+        other: ""
+      },
+      "svcusg.portal": {
+        vars: ["num", "bw"],
+        task: "",
+        desc: "Number of downloads done and bandwidth used.",
+        other: "Bandwidth is the variable used to charge credits."
+      },
+      "svcusg.tiles": {
+        vars: ["num", "bw"],
+        task: "",
+        desc: "Usage of tile services, including the number of requests and bandwidth used.",
+        other: "Bandwidth is the variable used to charge credits."
+      },
+      "svcusg.features": {
+        vars: ["num", "bw"],
+        task: "",
+        desc: "Usage of feature services, including the number of requests and bandwidth used.",
+        other: "Bandwidth is the variable used to charge credits."
+      },
+      "geocodecnt.geocode": {
+        vars: ["num"],
+        task: "",
+        desc: "Number of Batch Geocodes made.",
+        other: " (both etypes are acceptable and equivalent). etype should be considered like the 'svcusg' etype but because of legacy reasons is not."
+      },
       "svcusg.nasimpleroute": {vars: ["num"], task: "", desc: "Number of Simple Routes made.", other: ""},
       "svcusg.natsproute": {vars: ["num"], task: "", desc: "Number of Optimized routes made.", other: ""},
       "svcusg.nacfroute": {vars: ["num"], task: "", desc: "Number of closest facility routes made.", other: ""},
       "svcusg.naservicearea": {vars: ["num"], task: "", desc: "Number of service area requests.", other: ""},
       "svcusg.navrproute": {vars: ["num"], task: "", desc: "Number of Vehicle Routing (VRP) routes.", other: ""},
-      "svcusg.geoenrich": {vars: ["credits", "num"], task: "display,report,geoenrich", desc: "Number of areas/inputs and cost for GeoEnrichment services.", other: "Credits are calculated against the cost variable."},
+      "svcusg.geoenrich": {
+        vars: ["credits", "num"],
+        task: "display,report,geoenrich",
+        desc: "Number of areas/inputs and cost for GeoEnrichment services.",
+        other: "Credits are calculated against the cost variable."
+      },
       "svcusg.geotrigger": {vars: ["num"], task: "", desc: "Number of geotrigger calls", other: ""},
-      "svcusg.spanalysis": {vars: ["credits", "num"], task: "AggregatePoints, FindHotSpots, CreateBuffers, CreateDriveTimeAreas, DissolveBoundaries, MergeLayers, SummarizeWithin, SummarizeNearby, EnrichLayer, OverlayLayers, ExtractData, FindNearest", desc: "Number of requests to Spatial Analsysis.", other: "Credits are calculated against the cost variable."},
-      "svcusg.demogmaps": {vars: ["credits", "num"], task: "export,infographics", desc: "Number of requests to Demographic Maps.", other: "Credits are calculated against the num variable."},
-      "svcusg.applogin": {vars: ["num"], task: "", desc: "Number of application logins (for tracking purposes)", other: ""},
-      "svcusg.apploginprovider": {vars: ["num"], task: "", desc: "Number of application logins (for tracking purposes) from the point of view of the appOrgId provider. For marketplace use cases.", other: ""},
-      "svcusg.premiummaps": {vars: ["num", "credits"], task: "export,infographics,dataquery", desc: "Number of requests to premium map services.", other: "cost records the number of features in a query."},
-      "svcusg.premiumimagery": {vars: ["num", "credits"], task: "export,infographics,download,dataquery", desc: "Number of requests to premium imagery services.", other: ""},
-      "svcusg.premiumfeatures": {vars: ["num", "credits"], task: "", desc: "Number of requests to premium feature services.", other: ""},
-      "svcusg.landscapemaps": {vars: ["num", "credits"], task: "export,infographics,dataquery", desc: "Number of requests to landscape map services.", other: ""},
-      "svcusg.landscapeimagery": {vars: ["num", "credits"], task: "export,infographics,download,dataquery", desc: "Number of requests to landscape imagery services.", other: ""},
-      "svcusg.landscapeanalysis": {vars: ["num", "credits"], task: "", desc: "Number of requests to landscape analysis services.", other: ""},
-      "svcusg.elevanalysis": {vars: ["num", "credits"], task: "", desc: "Number of requests to Elevation Analysis. Credits are calculated against the cost variable. ", other: "Task used in analysis."}
+      "svcusg.spanalysis": {
+        vars: ["credits", "num"],
+        task: "AggregatePoints, FindHotSpots, CreateBuffers, CreateDriveTimeAreas, DissolveBoundaries, MergeLayers, SummarizeWithin, SummarizeNearby, EnrichLayer, OverlayLayers, ExtractData, FindNearest",
+        desc: "Number of requests to Spatial Analsysis.",
+        other: "Credits are calculated against the cost variable."
+      },
+      "svcusg.demogmaps": {
+        vars: ["credits", "num"],
+        task: "export,infographics",
+        desc: "Number of requests to Demographic Maps.",
+        other: "Credits are calculated against the num variable."
+      },
+      "svcusg.applogin": {
+        vars: ["num"],
+        task: "",
+        desc: "Number of application logins (for tracking purposes)",
+        other: ""
+      },
+      "svcusg.apploginprovider": {
+        vars: ["num"],
+        task: "",
+        desc: "Number of application logins (for tracking purposes) from the point of view of the appOrgId provider. For marketplace use cases.",
+        other: ""
+      },
+      "svcusg.premiummaps": {
+        vars: ["num", "credits"],
+        task: "export,infographics,dataquery",
+        desc: "Number of requests to premium map services.",
+        other: "cost records the number of features in a query."
+      },
+      "svcusg.premiumimagery": {
+        vars: ["num", "credits"],
+        task: "export,infographics,download,dataquery",
+        desc: "Number of requests to premium imagery services.",
+        other: ""
+      },
+      "svcusg.premiumfeatures": {
+        vars: ["num", "credits"],
+        task: "",
+        desc: "Number of requests to premium feature services.",
+        other: ""
+      },
+      "svcusg.landscapemaps": {
+        vars: ["num", "credits"],
+        task: "export,infographics,dataquery",
+        desc: "Number of requests to landscape map services.",
+        other: ""
+      },
+      "svcusg.landscapeimagery": {
+        vars: ["num", "credits"],
+        task: "export,infographics,download,dataquery",
+        desc: "Number of requests to landscape imagery services.",
+        other: ""
+      },
+      "svcusg.landscapeanalysis": {
+        vars: ["num", "credits"],
+        task: "",
+        desc: "Number of requests to landscape analysis services.",
+        other: ""
+      },
+      "svcusg.elevanalysis": {
+        vars: ["num", "credits"],
+        task: "",
+        desc: "Number of requests to Elevation Analysis. Credits are calculated against the cost variable. ",
+        other: "Task used in analysis."
+      }
     },
 
     /**
@@ -206,11 +296,12 @@ define([
 
       this.usageGrid = declare([OnDemandGrid, DijitRegistry])({
         store: usageStore,
-        minRowsPerPage: 10000,
+        bufferRows: Infinity,
         sort: "username",
         columns: {
           type: {
             label: "Type",
+            sortable: true,
             renderCell: lang.hitch(this, function (object, value, node, options) {
               if(object.variable) {
                 return put('div.serviceType', {
@@ -224,12 +315,14 @@ define([
           },
           username: {
             label: "Username",
+            sortable: true,
             renderCell: lang.hitch(this, function (object, value, node, options) {
               return put('div.' + object.userType, value);
             })
           },
           name: {
             label: "Service Name",
+            sortable: true,
             renderCell: lang.hitch(this, function (object, value, node, options) {
               if(value) {
                 return put('a', {
@@ -244,17 +337,23 @@ define([
 
             })
           },
-          appId: { label: "App Id" },
+          appId: {
+            label: "App Id",
+            sortable: true
+          },
           num: {
             label: "Number of Requests",
+            sortable: false,
             renderCell: lang.hitch(this, this.cellRenderer, 'num', 0)
           },
           bw: {
             label: "Bandwidth",
+            sortable: false,
             renderCell: lang.hitch(this, this.cellRenderer, 'bw', 0)
           },
           credits: {
             label: "Credits",
+            sortable: false,
             renderCell: lang.hitch(this, this.cellRenderer, 'credits', 6)
           }
         }
@@ -268,10 +367,11 @@ define([
       this.orgGrid = declare([OnDemandGrid, DijitRegistry])({
         store: usageStore,
         query: {userType: "theOrg"},
-        minRowsPerPage: 10000,
+        bufferRows: Infinity,
         columns: {
           "type": {
             label: "Type",
+            sortable: true,
             renderCell: lang.hitch(this, function (object, value, node, options) {
               return put('div.serviceType', {
                 innerHTML: object.variable.desc,
@@ -281,18 +381,22 @@ define([
           },
           num: {
             label: "Number of Requests",
+            sortable: false,
             renderCell: lang.hitch(this, this.totalsCellRenderer, 'num', 0)
           },
           bw: {
             label: "Bandwidth",
+            sortable: false,
             renderCell: lang.hitch(this, this.totalsCellRenderer, 'bw', 0)
           },
           stg: {
             label: "Storage",
+            sortable: false,
             renderCell: lang.hitch(this, this.totalsCellRenderer, 'stg', 0)
           },
           credits: {
             label: "Credits",
+            sortable: false,
             renderCell: lang.hitch(this, this.totalsCellRenderer, 'credits', 6)
           }
         }
@@ -303,24 +407,28 @@ define([
       this.usersGrid = declare([OnDemandGrid, DijitRegistry])({
         store: usageStore,
         query: {userType: "orgUser"},
-        minRowsPerPage: 10000,
+        bufferRows: Infinity,
         columns: {
           username: {
             label: "Username",
+            sortable: true,
             renderCell: lang.hitch(this, function (object, value, node, options) {
               return put('div.' + object.userType, value);
             })
           },
           num: {
             label: "Number of Requests",
+            sortable: false,
             renderCell: lang.hitch(this, this.totalsCellRenderer, 'num', 0)
           },
           bw: {
             label: "Bandwidth",
+            sortable: false,
             renderCell: lang.hitch(this, this.totalsCellRenderer, 'bw', 0)
           },
           credits: {
             label: "Credits",
+            sortable: false,
             renderCell: lang.hitch(this, this.totalsCellRenderer, 'credits', 6)
           }
         }
@@ -330,30 +438,41 @@ define([
 
       this.servicesGrid = declare([OnDemandGrid, DijitRegistry])({
         store: usageStore,
-        minRowsPerPage: 10000,
+        bufferRows: Infinity,
         sort: [
           {attribute: "hostOrgId", descending: true}
         ],
         columns: {
           name: {
-            label: "Name"
+            label: "Name",
+            sortable: true
           },
           hostOrgId: {
             label: "Host Org",
+            sortable: true,
             formatter: lang.hitch(this, function (hostOrgId) {
               return (this.portalUser.portal.id === hostOrgId) ? this.portalUser.portal.name : "";
             })
           },
           num: {
             label: "Number of Requests",
+            sortable: false,
+            /*get: lang.partial(this.calcTotal2, "num"),
+            formatter: this.formatNumericValue*/
             renderCell: lang.hitch(this, this.totalsCellRenderer, 'num', 0)
           },
           bw: {
             label: "Bandwidth",
+            sortable: false,
+            /*get: lang.partial(this.calcTotal2, "bw"),
+            formatter: this.bytesToSize*/
             renderCell: lang.hitch(this, this.totalsCellRenderer, 'bw', 0)
           },
           credits: {
             label: "Credits",
+            sortable: false,
+            /*get: lang.partial(this.calcTotal2, "credits"),
+            formatter: this.formatNumericValue*/
             renderCell: lang.hitch(this, this.totalsCellRenderer, 'credits', 6)
           }
         }
@@ -363,30 +482,35 @@ define([
 
       this.applicationsGrid = declare([OnDemandGrid, DijitRegistry])({
         store: usageStore,
-        minRowsPerPage: 10000,
+        bufferRows: Infinity,
         sort: [
           {attribute: "appOrgId", descending: true}
         ],
         columns: {
           appId: {
-            label: "App Id"
+            label: "App Id",
+            sortable: true
           },
           appOrgId: {
             label: "App Org",
+            sortable: false,
             formatter: lang.hitch(this, function (appOrgId) {
               return (this.portalUser.portal.id === appOrgId) ? this.portalUser.portal.name : appOrgId;
             })
           },
           num: {
             label: "Number of Requests",
+            sortable: false,
             renderCell: lang.hitch(this, this.totalsCellRenderer, 'num', 0)
           },
           bw: {
             label: "Bandwidth",
+            sortable: false,
             renderCell: lang.hitch(this, this.totalsCellRenderer, 'bw', 0)
           },
           credits: {
             label: "Credits",
+            sortable: false,
             renderCell: lang.hitch(this, this.totalsCellRenderer, 'credits', 6)
           }
         }
@@ -620,9 +744,11 @@ define([
         }
       }
 
-      var serviceTypeStore = new ObjectStore({ objectStore: new Memory({
-        data: serviceTypeData
-      })});
+      var serviceTypeStore = new ObjectStore({
+        objectStore: new Memory({
+          data: serviceTypeData
+        })
+      });
       registry.byId('serviceTypeSelect').setStore(serviceTypeStore);
     },
 
@@ -672,22 +798,28 @@ define([
         }
       });
 
-      var usernamesStore = new ObjectStore({ objectStore: new Memory({
-        data: usernamesData
-      })});
+      var usernamesStore = new ObjectStore({
+        objectStore: new Memory({
+          data: usernamesData
+        })
+      });
       registry.byId('usernameSelect').setStore(usernamesStore);
       registry.byId('usernameSelect').set('disabled', false);
 
-      var serviceNamesStore = new ObjectStore({ objectStore: new Memory({
-        data: serviceNamesData
-      })});
+      var serviceNamesStore = new ObjectStore({
+        objectStore: new Memory({
+          data: serviceNamesData
+        })
+      });
       registry.byId('serviceNamesSelect').setStore(serviceNamesStore);
       registry.byId('serviceNamesSelect').set('disabled', false);
 
 
-      var applicationIdsStore = new ObjectStore({ objectStore: new Memory({
-        data: applicationIdsData
-      })});
+      var applicationIdsStore = new ObjectStore({
+        objectStore: new Memory({
+          data: applicationIdsData
+        })
+      });
       registry.byId('applicationIdSelect').setStore(applicationIdsStore);
       registry.byId('applicationIdSelect').set('disabled', false);
 
@@ -918,7 +1050,7 @@ define([
 
       esriRequest({
         url: lang.replace("{portal.portalUrl}/portals/{portal.id}/usage", this.portalUser),
-        content: lang.mixin({ f: "json" }, dateRange, parameters, filters || {})
+        content: lang.mixin({f: "json"}, dateRange, parameters, filters || {})
       }).then(lang.hitch(this, function (usageReport) {
         //console.log(usageReport);
         deferred.resolve(usageReport);
@@ -1060,6 +1192,15 @@ define([
       return totalValue;
     },
 
+    /*calcTotal2: function (attr, item) {
+     var totalValue = 0;
+     array.forEach(item[attr], lang.hitch(this, function (val) {
+     totalValue += parseFloat(val[1]);
+     }));
+     return totalValue;
+     },*/
+
+
     /**
      *
      * @param variableName
@@ -1113,6 +1254,14 @@ define([
       var totalValue = this.calcTotal(value);
       return put("div.userValue", isSize ? this.bytesToSize(totalValue) : this.formatNumericValue(totalValue, places))
     },
+
+
+    //totalsCellRenderer2: function (variableName, places, object, value, node, options) {
+    //  var isSize = ((variableName === 'bw') || (variableName === 'stg'));
+    //  console.log("totalsCellRenderer: ", variableName, value);
+    //  var totalValue = value; // this.calcTotal(value);
+    //  return put("div.userValue", isSize ? this.bytesToSize(totalValue) : this.formatNumericValue(totalValue, places))
+    //},
 
 
     /**
